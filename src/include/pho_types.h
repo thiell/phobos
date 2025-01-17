@@ -564,7 +564,7 @@ struct object_info {
     struct timeval creation_time;
     struct timeval access_time;
     struct timeval deprec_time;
-    char *grouping;
+    const char *grouping;
 };
 
 /**
