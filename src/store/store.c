@@ -368,7 +368,7 @@ int object_md_save(struct dss_handle *dss, struct pho_xfer_target *xfer,
         rc = dss_object_get(dss, &filter, &obj_res, &obj_cnt, NULL);
         dss_filter_free(&filter);
         if (rc || obj_cnt == 0) {
-            pho_verb("dss_object_get failed for objid:'%s'", xfer->xt_objid);
+            pho_debug("dss_object_get failed for objid:'%s'", xfer->xt_objid);
 
             /**
              * If we try overwritting an object that doesn't exist in the
