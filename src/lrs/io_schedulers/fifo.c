@@ -331,7 +331,7 @@ search_again:
 
 find_device:
     *dev = dev_picker(io_sched->devices, PHO_DEV_OP_ST_UNSPEC, wreq->library,
-                      wreq->grouping, select_empty_loaded_mount, 0, &NO_STRING,
+                      targeted_grouping, select_empty_loaded_mount, 0, &NO_STRING,
                       *medium, true, false, NULL);
     if (*dev)
         return 0;
