@@ -1356,18 +1356,20 @@ struct lrs_dev *dev_picker(GPtrArray *devices,
         MUTEX_LOCK(&itr->ld_mutex);
         if (itr->ld_ongoing_io || itr->ld_needs_sync || itr->ld_sub_request ||
             itr->ld_ongoing_scheduled) {
+            /*
             if (grouping && itr->ld_dss_media_info &&
                 string_exists(&itr->ld_dss_media_info->groupings, grouping)
                 ) {
-                /* busy drive is part of group, pretend there is no other
+                * busy drive is part of group, pretend there is no other
                  * drive available
-                 */
+                 *
                 if (one_drive_available)
                     *one_drive_available = false;
                 selected = NULL;
                 MUTEX_UNLOCK(&itr->ld_mutex);
                 break;
             }
+            */
             pho_debug("Skipping busy device '%s'", itr->ld_dev_path);
             goto unlock_continue;
         }
@@ -2670,6 +2672,11 @@ void rwalloc_cancel_DONE_devices(struct req_container *reqc)
             MUTEX_LOCK(&respc->devices[i]->ld_mutex);
             reqc->params.rwalloc.media[i].status = SUB_REQUEST_CANCEL;
             respc->devices[i]->ld_ongoing_io = false;
+            if (respc->devices[i]->ld_ongoing_grouping.grouping) {
+                free(respc->devices[i]->ld_ongoing_grouping.grouping);
+                respc->devices[i]->ld_ongoing_grouping.grouping = NULL;
+            }
+
             MUTEX_UNLOCK(&respc->devices[i]->ld_mutex);
             respc->devices[i] = NULL;
             if (is_write) {
